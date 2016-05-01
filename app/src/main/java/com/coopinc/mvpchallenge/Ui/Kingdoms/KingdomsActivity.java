@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.coopinc.mvpchallenge.ChallengeApp;
 import com.coopinc.mvpchallenge.R;
 import com.coopinc.mvpchallenge.ui.BaseActivity;
+import com.coopinc.mvpchallenge.ui.auth.AuthActivity;
 import com.coopinc.mvpchallenge.ui.auth.LoginPresenter;
 
 import butterknife.Bind;
@@ -31,20 +32,17 @@ public class KingdomsActivity extends BaseActivity {
         toolbar.setOnMenuItemClickListener(new MenuItemOnClickListener());
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ChallengeApp.getContext());
         getSupportActionBar().setTitle(prefs.getString(LoginPresenter.EMAIL_PREFS_KEY, DEFAULT_TITLE));
-        container = R.id.container_kingdom;
-        KingdomListFragment listFragment = new KingdomListFragment();
-        getFragmentManager().beginTransaction().add(container, listFragment).commit();
+        if (savedInstanceState == null) {
+            container = R.id.container_kingdom;
+            KingdomListFragment listFragment = new KingdomListFragment();
+            getFragmentManager().beginTransaction().add(container, listFragment).commit();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.overflow_menu, menu);
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     public class MenuItemOnClickListener implements Toolbar.OnMenuItemClickListener {
@@ -56,7 +54,7 @@ public class KingdomsActivity extends BaseActivity {
                 if (getFragmentManager().getBackStackEntryCount() > 0) {
                     getFragmentManager().popBackStackImmediate();
                 }
-                onBackPressed();
+                nextActivity(AuthActivity.class);
                 return true;
             }
             return false;

@@ -32,11 +32,16 @@ public class KingdomListFragment extends Fragment {
     private KingdomListAdapter adapter;
     private IKingdomListPresenter presenter;
 
+    private LinearLayoutManager llm;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new KingdomListPresenter(this, (KingdomsActivity) getActivity());
+        llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        adapter = new KingdomListAdapter(kingdoms, presenter);
     }
 
     @Nullable
@@ -45,11 +50,10 @@ public class KingdomListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_kingdom_list, container, false);
         ButterKnife.bind(this, view);
         tvEmpty.setVisibility(View.GONE);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        adapter = new KingdomListAdapter(kingdoms, presenter);
-        recyclerView.setAdapter(adapter);
+        if(recyclerView.getAdapter() == null) {
+            recyclerView.setLayoutManager(llm);
+            recyclerView.setAdapter(adapter);
+        }
         swiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
