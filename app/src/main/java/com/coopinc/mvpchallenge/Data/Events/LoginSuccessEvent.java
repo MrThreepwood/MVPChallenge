@@ -1,6 +1,6 @@
-package com.coopinc.mvpchallenge.Data.Events;
+package com.coopinc.mvpchallenge.data.events;
 
-import com.coopinc.mvpchallenge.Data.MessageModel;
+import com.coopinc.mvpchallenge.data.models.MessageModel;
 
 public class LoginSuccessEvent {
     private final MessageModel messageModel;

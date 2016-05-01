@@ -1,4 +1,4 @@
-package com.coopinc.mvpchallenge.Data;
+package com.coopinc.mvpchallenge.data.models;
 
 public class MessageModel {
     private String message;

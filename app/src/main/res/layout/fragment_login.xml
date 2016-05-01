@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/myriad_light_blue"
     android:orientation="vertical"
-    tools:context="com.coopinc.mvpchallenge.Ui.Auth.LoginFragment">
+    tools:context="com.coopinc.mvpchallenge.ui.auth.LoginFragment">
 
     <ProgressBar
         android:id="@+id/progress_bar"

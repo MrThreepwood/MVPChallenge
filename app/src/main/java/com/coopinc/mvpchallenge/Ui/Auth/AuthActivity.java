@@ -1,11 +1,13 @@
-package com.coopinc.mvpchallenge.Ui.Auth;
+package com.coopinc.mvpchallenge.ui.auth;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import com.coopinc.mvpchallenge.BaseActivity;
 import com.coopinc.mvpchallenge.R;
+import com.coopinc.mvpchallenge.ui.BaseActivity;
+import com.coopinc.mvpchallenge.ui.kingdoms.KingdomsActivity;
 
 public class AuthActivity extends BaseActivity {
     SharedPreferences prefs;
@@ -15,17 +17,18 @@ public class AuthActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.container_auth);
         container = R.id.auth_container;
-        if (savedInstanceState != null) {
-            return;
-        }
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (prefs.contains("login")) {
-//            KingdomListFragment kingdomsFragment = new KingdomListFragment();
-//            getFragmentManager().beginTransaction().add(R.id.fragment_container, kingdomsFragment).commit();
-        } else {
-            LoginFragment loginFragment = new LoginFragment();
-            getFragmentManager().beginTransaction().add(R.id.auth_container, loginFragment).commit();
-        }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (prefs.contains(LoginPresenter.EMAIL_PREFS_KEY)) {
+            Intent intent = new Intent(this, KingdomsActivity.class);
+            startActivity(intent);
+        } else {
+            LoginFragment loginFragment = new LoginFragment();
+            getFragmentManager().beginTransaction().add(container, loginFragment).commit();
+        }
+    }
 }

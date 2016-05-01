@@ -1,4 +1,4 @@
-package com.coopinc.mvpchallenge.Ui.Auth;
+package com.coopinc.mvpchallenge.ui.auth;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -10,14 +10,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.coopinc.mvpchallenge.BaseActivity;
 import com.coopinc.mvpchallenge.R;
+import com.coopinc.mvpchallenge.ui.IBaseActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginFragment extends Fragment implements LoginViewInterface {
+public class LoginFragment extends Fragment implements ILoginView {
     @Bind(R.id.name)
     EditText etName;
     @Bind(R.id.email)
@@ -25,15 +25,19 @@ public class LoginFragment extends Fragment implements LoginViewInterface {
     @Bind(R.id.progress_bar)
     ProgressBar progressBar;
 
-    private LoginPresenterInterface presenter;
+    private ILoginPresenter presenter;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        presenter = new LoginPresenter(this, (IBaseActivity) getActivity());
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
-        presenter = new LoginPresenter(this, (BaseActivity) getActivity());
         return view;
     }
 
@@ -81,7 +85,7 @@ public class LoginFragment extends Fragment implements LoginViewInterface {
     }
 
     @OnClick(R.id.submit)
-    public void onSubmit() {
+    public final void onSubmit() {
         presenter.logIn(etName.getText().toString(), etEmail.getText().toString());
     }
 }

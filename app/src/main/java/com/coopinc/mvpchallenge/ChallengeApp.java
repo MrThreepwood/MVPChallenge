@@ -3,16 +3,23 @@ package com.coopinc.mvpchallenge;
 import android.app.Application;
 import android.content.Context;
 
-import com.coopinc.mvpchallenge.Data.ChallengeApi;
-import com.coopinc.mvpchallenge.Domain.AuthDomain;
-import com.coopinc.mvpchallenge.Service.AuthService;
+import com.coopinc.mvpchallenge.data.ChallengeApi;
+import com.coopinc.mvpchallenge.data.domain.AuthDomain;
+import com.coopinc.mvpchallenge.data.domain.KingdomDomain;
+import com.coopinc.mvpchallenge.data.service.AuthService;
+import com.coopinc.mvpchallenge.data.service.KingdomService;
 
 import retrofit.RestAdapter;
 
 public class ChallengeApp extends Application {
     private static Context context;
+
     private static final AuthDomain authDomain = new AuthDomain();
-    private static final AuthService authService = new AuthService();
+    private static final KingdomDomain kingdomDomain = new KingdomDomain();
+
+    private static final AuthService authService = new AuthService(authDomain);
+    private static final KingdomService kingdomService = new KingdomService(kingdomDomain);
+
     private static RestAdapter restAdapter;
     private static ChallengeApi apiInstance;
 
@@ -35,11 +42,11 @@ public class ChallengeApp extends Application {
         return apiInstance;
     }
 
-    public static AuthDomain getAuthDomain() {
-        return authDomain;
-    }
-
     public static AuthService getAuthService() {
         return authService;
+    }
+
+    public static KingdomService getKingdomService() {
+        return kingdomService;
     }
 }

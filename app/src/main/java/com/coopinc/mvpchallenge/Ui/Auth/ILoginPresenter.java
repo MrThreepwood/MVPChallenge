@@ -1,6 +1,6 @@
-package com.coopinc.mvpchallenge.Ui.Auth;
+package com.coopinc.mvpchallenge.ui.auth;
 
-public interface LoginPresenterInterface {
+public interface ILoginPresenter {
     void onPause();
     void onResume();
     void logIn(String name, String email);

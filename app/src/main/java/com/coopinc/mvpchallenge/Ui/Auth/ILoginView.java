@@ -1,6 +1,6 @@
-package com.coopinc.mvpchallenge.Ui.Auth;
+package com.coopinc.mvpchallenge.ui.auth;
 
-public interface LoginViewInterface {
+public interface ILoginView {
     void showLoadingIndicator();
     void hideLoadingIndicator();
     void setNameError(String error);
