@@ -4,9 +4,12 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -21,17 +24,22 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class KingdomListFragment extends Fragment {
+public class KingdomListFragment extends Fragment implements IKingdomListFragment {
 
-    @Bind(R.id.card_list) RecyclerView recyclerView;
-    @Bind(R.id.progress_bar) ProgressBar progressBar;
-    @Bind(R.id.empty_text) TextView tvEmpty;
-    @Bind(R.id.swiper) SwipeRefreshLayout swiper;
+    @Bind(R.id.card_list)
+    RecyclerView recyclerView;
+    @Bind(R.id.progress_bar)
+    ProgressBar progressBar;
+    @Bind(R.id.empty_text)
+    TextView tvEmpty;
+    @Bind(R.id.swiper)
+    SwipeRefreshLayout swiper;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     private List<KingdomBriefModel> kingdoms = new ArrayList<KingdomBriefModel>();
     private KingdomListAdapter adapter;
     private IKingdomListPresenter presenter;
-
     private LinearLayoutManager llm;
 
 
@@ -50,6 +58,9 @@ public class KingdomListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_kingdom_list, container, false);
         ButterKnife.bind(this, view);
         tvEmpty.setVisibility(View.GONE);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.showOverflowMenu();
+        toolbar.setOnMenuItemClickListener(new MenuItemOnClickListener());
         if(recyclerView.getAdapter() == null) {
             recyclerView.setLayoutManager(llm);
             recyclerView.setAdapter(adapter);
@@ -72,7 +83,7 @@ public class KingdomListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        presenter.onResume(kingdoms.isEmpty());
+        presenter.onResume();
     }
 
     @Override
@@ -81,22 +92,44 @@ public class KingdomListFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
+    @Override
+    public List<KingdomBriefModel> getLocalKingdoms() {
+        return kingdoms;
     }
 
+    @Override
+    public void setToolbarTitle(String title) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
+    }
+
+    @Override
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
         swiper.setRefreshing(false);
     }
 
-    public void showError(String error) {
-
-    }
-
+    @Override
     public void setData(List<KingdomBriefModel> kingdoms) {
         this.kingdoms = kingdoms;
+        tvEmpty.setVisibility(View.GONE);
         adapter.setKingdoms(kingdoms);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showError(String error) {
+        tvEmpty.setText(error + "\nPlease pull down to try again.");
+        tvEmpty.setVisibility(View.VISIBLE);
+    }
+
+    public class MenuItemOnClickListener implements Toolbar.OnMenuItemClickListener {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            if (getString(R.string.logout).contentEquals(menuItem.getTitle())) {
+                presenter.logout();
+                return true;
+            }
+            return false;
+        }
     }
 }

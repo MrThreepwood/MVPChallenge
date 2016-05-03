@@ -1,24 +1,29 @@
 package com.coopinc.mvpchallenge.ui.kingdoms;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.coopinc.mvpchallenge.ChallengeApp;
 import com.coopinc.mvpchallenge.data.events.KingdomListFailureEvent;
 import com.coopinc.mvpchallenge.data.events.KingdomListSuccessEvent;
 import com.coopinc.mvpchallenge.data.service.KingdomService;
+import com.coopinc.mvpchallenge.ui.auth.AuthActivity;
+import com.coopinc.mvpchallenge.ui.auth.LoginPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 public class KingdomListPresenter implements IKingdomListPresenter {
     public static final String KINGDOM_FLAG = "kingdomId";
+    private static final String DEFAULT_TITLE = "email";
 
-    private KingdomListFragment view;
+    private IKingdomListFragment view;
     private KingdomsActivity viewParent;
     private KingdomService service;
 
-    public KingdomListPresenter(KingdomListFragment view, KingdomsActivity viewParent) {
+    public KingdomListPresenter(IKingdomListFragment view, KingdomsActivity viewParent) {
         this.view = view;
         this.viewParent = viewParent;
         this.service = ChallengeApp.getKingdomService();
@@ -30,16 +35,13 @@ public class KingdomListPresenter implements IKingdomListPresenter {
     }
 
     @Override
-    public void onResume(boolean isKingdomsEmpty) {
+    public void onResume() {
         EventBus.getDefault().register(this);
-        if (isKingdomsEmpty) {
+        if (view.getLocalKingdoms().isEmpty()) {
             getKingdoms();
         }
-    }
-
-    @Override
-    public void refresh() {
-        getKingdoms();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ChallengeApp.getContext());
+        view.setToolbarTitle(prefs.getString(LoginPresenter.EMAIL_PREFS_KEY, DEFAULT_TITLE));
     }
 
     @Override
@@ -52,6 +54,18 @@ public class KingdomListPresenter implements IKingdomListPresenter {
 //        viewParent.nextFragment(f);
     }
 
+    @Override
+    public void refresh() {
+        getKingdoms();
+    }
+
+    @Override
+    public void logout() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ChallengeApp.getContext());
+        prefs.edit().remove(LoginPresenter.EMAIL_PREFS_KEY).commit();
+        viewParent.nextActivity(AuthActivity.class);
+    }
+
     @Subscribe
     public final void onKingdomListSuccess(KingdomListSuccessEvent event) {
         view.setData(event.getKindoms());
@@ -60,7 +74,13 @@ public class KingdomListPresenter implements IKingdomListPresenter {
 
     @Subscribe
     public final void onKingdomListFailure(KingdomListFailureEvent event) {
-        view.showError(event.getError());
+        if(view.getLocalKingdoms().isEmpty()) {
+            view.showError(event.getError());
+            view.hideProgressBar();
+        } else {
+            Toast.makeText(ChallengeApp.getContext(), "Error refreshing kingdoms.", Toast.LENGTH_LONG).show();
+            view.hideProgressBar();
+        }
     }
 
     private void getKingdoms() {

@@ -7,14 +7,6 @@
     android:orientation="vertical"
     tools:context=".ui.kingdoms.KingdomsActivity">
 
-    <android.support.v7.widget.Toolbar
-        xmlns:Android="http://schemas.Android.com/apk/res/Android"
-        xmlns:app="http://schemas.Android.com/apk/res-auto"
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/myriad_light_blue"/>
-
     <FrameLayout
         android:id="@+id/container_kingdom"
         android:layout_width="match_parent"
