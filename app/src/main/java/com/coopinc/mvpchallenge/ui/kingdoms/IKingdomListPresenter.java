@@ -1,13 +1,10 @@
 package com.coopinc.mvpchallenge.ui.kingdoms;
 
-public interface IKingdomListPresenter {
-    void onPause();
+import com.coopinc.mvpchallenge.ui.IBasePresenter;
 
-    void onResume();
-
-    void nextFragment(String kingdomId);
-
+public interface IKingdomListPresenter extends IBasePresenter {
+    void onCreateView();
+    void onKingdomSelected(String kingdomId);
     void refresh();
-
     void logout();
 }

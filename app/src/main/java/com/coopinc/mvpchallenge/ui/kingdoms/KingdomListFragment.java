@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,15 +15,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.coopinc.mvpchallenge.R;
-import com.coopinc.mvpchallenge.data.models.KingdomBriefModel;
+import com.coopinc.mvpchallenge.data.models.KingdomModel;
+import com.coopinc.mvpchallenge.ui.BaseActivity;
+import com.coopinc.mvpchallenge.ui.BaseFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class KingdomListFragment extends Fragment implements IKingdomListFragment {
+public class KingdomListFragment extends BaseFragment<KingdomListPresenter> implements IKingdomListFragment {
 
     @Bind(R.id.card_list)
     RecyclerView recyclerView;
@@ -37,19 +37,12 @@ public class KingdomListFragment extends Fragment implements IKingdomListFragmen
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    private List<KingdomBriefModel> kingdoms = new ArrayList<KingdomBriefModel>();
     private KingdomListAdapter adapter;
-    private IKingdomListPresenter presenter;
-    private LinearLayoutManager llm;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        adapter = new KingdomListAdapter(presenter);
         super.onCreate(savedInstanceState);
-        presenter = new KingdomListPresenter(this, (KingdomsActivity) getActivity());
-        llm = new LinearLayoutManager(getActivity());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        adapter = new KingdomListAdapter(kingdoms, presenter);
     }
 
     @Nullable
@@ -57,14 +50,12 @@ public class KingdomListFragment extends Fragment implements IKingdomListFragmen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_kingdom_list, container, false);
         ButterKnife.bind(this, view);
-        tvEmpty.setVisibility(View.GONE);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.showOverflowMenu();
+        presenter.onCreateView();
+        toolbar.inflateMenu(R.menu.overflow_menu);
         toolbar.setOnMenuItemClickListener(new MenuItemOnClickListener());
-        if(recyclerView.getAdapter() == null) {
-            recyclerView.setLayoutManager(llm);
-            recyclerView.setAdapter(adapter);
-        }
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setAdapter(adapter);
         swiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -75,31 +66,13 @@ public class KingdomListFragment extends Fragment implements IKingdomListFragmen
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        presenter.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        presenter.onResume();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
-    }
-
-    @Override
-    public List<KingdomBriefModel> getLocalKingdoms() {
-        return kingdoms;
+    public KingdomListPresenter onCreatePresenter() {
+        return new KingdomListPresenter(this);
     }
 
     @Override
     public void setToolbarTitle(String title) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
+        toolbar.setTitle(title);
     }
 
     @Override
@@ -109,23 +82,36 @@ public class KingdomListFragment extends Fragment implements IKingdomListFragmen
     }
 
     @Override
-    public void setData(List<KingdomBriefModel> kingdoms) {
-        this.kingdoms = kingdoms;
-        tvEmpty.setVisibility(View.GONE);
+    public void setData(List<KingdomModel> kingdoms) {
+        if(tvEmpty != null) {
+            tvEmpty.setVisibility(View.GONE);
+        }
         adapter.setKingdoms(kingdoms);
-        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void showError(String error) {
-        tvEmpty.setText(error + "\nPlease pull down to try again.");
+        String formattedError = error + "\nPlease pull down to try again.";
+        tvEmpty.setText(formattedError);
         tvEmpty.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void goToKingdom(Fragment kingdomFragment) {
+        ((BaseActivity)getActivity()).nextFragment(kingdomFragment);
+    }
+
+    @Override
+    public void logout(Class authActivityClass) {
+        BaseActivity parent = ((BaseActivity) getActivity());
+        parent.nextActivity(authActivityClass);
+        parent.finish();
     }
 
     public class MenuItemOnClickListener implements Toolbar.OnMenuItemClickListener {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
-            if (getString(R.string.logout).contentEquals(menuItem.getTitle())) {
+            if (menuItem.getItemId() == R.id.logout) {
                 presenter.logout();
                 return true;
             }

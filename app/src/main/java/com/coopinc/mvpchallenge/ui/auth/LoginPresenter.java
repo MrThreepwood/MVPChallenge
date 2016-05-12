@@ -8,9 +8,8 @@ import com.coopinc.mvpchallenge.ChallengeApp;
 import com.coopinc.mvpchallenge.R;
 import com.coopinc.mvpchallenge.data.events.LoginFailEvent;
 import com.coopinc.mvpchallenge.data.events.LoginSuccessEvent;
-import com.coopinc.mvpchallenge.data.service.AuthService;
+import com.coopinc.mvpchallenge.data.service.auth.AuthService;
 import com.coopinc.mvpchallenge.ui.BasePresenter;
-import com.coopinc.mvpchallenge.ui.IBaseActivity;
 import com.coopinc.mvpchallenge.ui.kingdoms.KingdomsActivity;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -19,15 +18,13 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
     public static final String EMAIL_PREFS_KEY = "email";
 
     private ILoginView view;
-    private IBaseActivity viewParent;
     private AuthService authService;
 
     private String email;
 
-    public LoginPresenter (ILoginView view, IBaseActivity baseActivity) {
+    public LoginPresenter (ILoginView view) {
         this.view = view;
         authService = ChallengeApp.getAuthService();
-        viewParent = baseActivity;
     }
 
     @Override
@@ -46,7 +43,7 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ChallengeApp.getContext());
         prefs.edit().putString(EMAIL_PREFS_KEY, email).commit();
         email = null;
-        viewParent.nextActivity(KingdomsActivity.class);
+        view.goToKingdomList(KingdomsActivity.class);
     }
 
     @Subscribe

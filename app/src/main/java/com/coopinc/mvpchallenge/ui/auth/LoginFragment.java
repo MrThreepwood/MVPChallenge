@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.coopinc.mvpchallenge.R;
-import com.coopinc.mvpchallenge.ui.IBaseActivity;
+import com.coopinc.mvpchallenge.ui.BaseActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,7 +30,7 @@ public class LoginFragment extends Fragment implements ILoginView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new LoginPresenter(this, (IBaseActivity) getActivity());
+        presenter = new LoginPresenter(this);
     }
 
     @Nullable
@@ -87,5 +87,12 @@ public class LoginFragment extends Fragment implements ILoginView {
     @OnClick(R.id.submit)
     public final void onSubmit() {
         presenter.logIn(etName.getText().toString(), etEmail.getText().toString());
+    }
+
+    @Override
+    public void goToKingdomList(Class kingdomListClass) {
+        BaseActivity parent = (BaseActivity) getActivity();
+        parent.nextActivity(kingdomListClass);
+        parent.finish();
     }
 }

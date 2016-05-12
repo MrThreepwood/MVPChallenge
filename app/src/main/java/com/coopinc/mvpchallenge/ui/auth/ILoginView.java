@@ -6,4 +6,5 @@ public interface ILoginView {
     void setNameError(String error);
     void setEmailError(String error);
     void showOtherError(String error);
+    void goToKingdomList(Class kingdomListClass);
 }

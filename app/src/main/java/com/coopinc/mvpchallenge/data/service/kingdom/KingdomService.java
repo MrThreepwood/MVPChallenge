@@ -1,9 +1,9 @@
-package com.coopinc.mvpchallenge.data.service;
+package com.coopinc.mvpchallenge.data.service.kingdom;
 
 import com.coopinc.mvpchallenge.data.domain.KingdomDomain;
 import com.coopinc.mvpchallenge.data.events.KingdomListFailureEvent;
 import com.coopinc.mvpchallenge.data.events.KingdomListSuccessEvent;
-import com.coopinc.mvpchallenge.data.models.KingdomBriefModel;
+import com.coopinc.mvpchallenge.data.models.KingdomModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -16,12 +16,12 @@ public class KingdomService implements IKingdomListCallback {
         this.domain = domain;
     }
 
-    public void getKindoms() {
+    public void getKingdoms() {
         domain.getKingdoms(this);
     }
 
     @Override
-    public void kingdomListSuccess(List<KingdomBriefModel> kingdoms) {
+    public void kingdomListSuccess(List<KingdomModel> kingdoms) {
         EventBus.getDefault().post(new KingdomListSuccessEvent(kingdoms));
     }
 

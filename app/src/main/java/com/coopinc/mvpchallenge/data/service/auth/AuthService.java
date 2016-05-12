@@ -1,4 +1,4 @@
-package com.coopinc.mvpchallenge.data.service;
+package com.coopinc.mvpchallenge.data.service.auth;
 
 import com.coopinc.mvpchallenge.data.domain.AuthDomain;
 import com.coopinc.mvpchallenge.data.events.LoginFailEvent;

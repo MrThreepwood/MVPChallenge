@@ -1,17 +1,17 @@
 package com.coopinc.mvpchallenge.data.events;
 
-import com.coopinc.mvpchallenge.data.models.KingdomBriefModel;
+import com.coopinc.mvpchallenge.data.models.KingdomModel;
 
 import java.util.List;
 
 public class KingdomListSuccessEvent {
-    private List<KingdomBriefModel> kindoms;
+    private List<KingdomModel> kindoms;
 
-    public KingdomListSuccessEvent(List<KingdomBriefModel> kindoms) {
+    public KingdomListSuccessEvent(List<KingdomModel> kindoms) {
         this.kindoms = kindoms;
     }
 
-    public List<KingdomBriefModel> getKindoms() {
+    public List<KingdomModel> getKindoms() {
         return kindoms;
     }
 }

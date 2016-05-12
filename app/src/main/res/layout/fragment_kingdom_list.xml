@@ -6,30 +6,30 @@
     android:orientation="vertical"
     tools:context=".ui.kingdoms.KingdomListFragment">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swiper"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            xmlns:Android="http://schemas.Android.com/apk/res/Android"
+            xmlns:app="http://schemas.Android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="@color/myriad_light_blue"/>
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                xmlns:Android="http://schemas.Android.com/apk/res/Android"
-                xmlns:app="http://schemas.Android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/myriad_light_blue"/>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/card_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-        </LinearLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/empty_text"
@@ -37,7 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:visibility="gone"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"

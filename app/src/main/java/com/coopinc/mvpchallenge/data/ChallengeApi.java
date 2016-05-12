@@ -1,6 +1,6 @@
 package com.coopinc.mvpchallenge.data;
 
-import com.coopinc.mvpchallenge.data.models.KingdomBriefModel;
+import com.coopinc.mvpchallenge.data.models.KingdomModel;
 import com.coopinc.mvpchallenge.data.models.MessageModel;
 
 import java.util.List;
@@ -14,11 +14,14 @@ import retrofit.http.POST;
 public interface ChallengeApi {
     @FormUrlEncoded
     @POST("/subscribe")
-    public void logIn(@Field("email") String email, Callback<MessageModel> message);
+    void logIn(@Field("email") String email, Callback<MessageModel> message);
+
     @GET("/kingdoms")
-    public void getKingdoms(Callback<List<KingdomBriefModel>> responseCallback);
+    void getKingdoms(Callback<List<KingdomModel>> responseCallback);
+
 //    @GET("/kingdoms/{id}")
-//    public void getKingdomDetails(@Path("id") String kingdomId,Callback<KingdomDetailedModel> responseCallback);
+//    void getKingdomDetails(@Path("id") String kingdomId,Callback<KingdomDetailedModel> responseCallback);
+
 //    @GET("/characters/{id}")
-//    public void getCharacter(@Path("id") String characterId, Callback<Models.Character> responseCallback);
+//    void getCharacter(@Path("id") String characterId, Callback<Models.Character> responseCallback);
 }

@@ -22,6 +22,7 @@ public class AuthActivity extends BaseActivity {
             if (prefs.contains(LoginPresenter.EMAIL_PREFS_KEY)) {
                 Intent intent = new Intent(this, KingdomsActivity.class);
                 startActivity(intent);
+                finish();
             } else {
                 LoginFragment loginFragment = new LoginFragment();
                 getFragmentManager().beginTransaction().add(container, loginFragment).commit();
