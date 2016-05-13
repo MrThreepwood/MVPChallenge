@@ -1,6 +1,6 @@
 package com.coopinc.mvpchallenge.data.service.auth;
 
-import com.coopinc.mvpchallenge.data.domain.AuthDomain;
+import com.coopinc.mvpchallenge.data.domain.auth.IAuthDomain;
 import com.coopinc.mvpchallenge.data.events.LoginFailEvent;
 import com.coopinc.mvpchallenge.data.events.LoginSuccessEvent;
 import com.coopinc.mvpchallenge.data.models.MessageModel;
@@ -9,9 +9,9 @@ import org.greenrobot.eventbus.EventBus;
 
 
 public class AuthService implements ILoginCallback {
-    private final AuthDomain authDomain;
+    private final IAuthDomain authDomain;
 
-    public AuthService (AuthDomain domain) {
+    public AuthService (IAuthDomain domain) {
         authDomain = domain;
     }
     public void logIn(String email) {

@@ -1,4 +1,4 @@
-package com.coopinc.mvpchallenge.data.domain;
+package com.coopinc.mvpchallenge.data.domain.kingdom;
 
 import com.coopinc.mvpchallenge.data.ChallengeApi;
 import com.coopinc.mvpchallenge.data.models.KingdomModel;
@@ -10,13 +10,14 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class KingdomDomain {
+public class KingdomDomain implements IKingdomDomain {
     private ChallengeApi api;
 
     public KingdomDomain (ChallengeApi api) {
         this.api = api;
     }
-    public void getKingdoms (final IKingdomListCallback resultCallback) {
+    @Override
+    public void getKingdoms(final IKingdomListCallback resultCallback) {
         api.getKingdoms(new Callback<List<KingdomModel>>() {
             @Override
             public void success(List<KingdomModel> kingdomModels, Response response) {
