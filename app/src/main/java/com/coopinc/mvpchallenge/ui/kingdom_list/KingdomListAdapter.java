@@ -1,4 +1,4 @@
-package com.coopinc.mvpchallenge.ui.kingdoms;
+package com.coopinc.mvpchallenge.ui.kingdom_list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.coopinc.mvpchallenge.R;
 import com.coopinc.mvpchallenge.data.models.KingdomModel;
+import com.coopinc.mvpchallenge.ui.util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class KingdomListAdapter extends RecyclerView.Adapter<KingdomListAdapter.
         if (kingdom.getImage() != null && !kingdom.getImage().isEmpty()) {
             Picasso.with(kingdomsViewHolder.itemView.getContext())
                     .load(kingdom.getImage())
-                    .fit()
+                    .transform(new CircleTransform())
                     .into(kingdomsViewHolder.vImage);
         } else {
             kingdomsViewHolder.vImage.setImageResource(R.mipmap.ic_launcher);
@@ -71,7 +72,7 @@ public class KingdomListAdapter extends RecyclerView.Adapter<KingdomListAdapter.
                 @Override
                 public void onClick(View view) {
                     String kingdomId = (String) view.getTag();
-                    presenter.onKingdomSelected(kingdomId);
+                    presenter.onKingdomSelected(kingdomId, vKingdomName.getText().toString());
                 }
             });
         }

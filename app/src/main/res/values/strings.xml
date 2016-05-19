@@ -11,4 +11,6 @@
     <string name="no_name">Please enter a name</string>
     <string name="invalid_email">Please enter a valid email</string>
     <string name="logout">Logout</string>
+    <string name="climate">Climate</string>
+    <string name="population">Population</string>
 </resources>

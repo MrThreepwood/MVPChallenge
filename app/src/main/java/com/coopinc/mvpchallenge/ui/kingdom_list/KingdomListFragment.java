@@ -1,7 +1,8 @@
-package com.coopinc.mvpchallenge.ui.kingdoms;
+package com.coopinc.mvpchallenge.ui.kingdom_list;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,8 +42,8 @@ public class KingdomListFragment extends BaseFragment<KingdomListPresenter> impl
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        adapter = new KingdomListAdapter(presenter);
         super.onCreate(savedInstanceState);
+        adapter = new KingdomListAdapter(presenter);
     }
 
     @Nullable
@@ -65,6 +66,7 @@ public class KingdomListFragment extends BaseFragment<KingdomListPresenter> impl
         return view;
     }
 
+    @NonNull
     @Override
     public KingdomListPresenter onCreatePresenter() {
         return new KingdomListPresenter(this);
@@ -98,7 +100,7 @@ public class KingdomListFragment extends BaseFragment<KingdomListPresenter> impl
 
     @Override
     public void goToKingdom(Fragment kingdomFragment) {
-        ((BaseActivity)getActivity()).nextFragment(kingdomFragment);
+        ((BaseActivity)getActivity()).nextFragment(kingdomFragment, true);
     }
 
     @Override

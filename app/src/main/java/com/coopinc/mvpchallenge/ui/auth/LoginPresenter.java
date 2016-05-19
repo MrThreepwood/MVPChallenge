@@ -6,11 +6,11 @@ import android.text.TextUtils;
 
 import com.coopinc.mvpchallenge.ChallengeApp;
 import com.coopinc.mvpchallenge.R;
-import com.coopinc.mvpchallenge.data.events.LoginFailEvent;
-import com.coopinc.mvpchallenge.data.events.LoginSuccessEvent;
+import com.coopinc.mvpchallenge.data.events.login.LoginFailureEvent;
+import com.coopinc.mvpchallenge.data.events.login.LoginSuccessEvent;
 import com.coopinc.mvpchallenge.data.service.auth.AuthService;
 import com.coopinc.mvpchallenge.ui.BasePresenter;
-import com.coopinc.mvpchallenge.ui.kingdoms.KingdomsActivity;
+import com.coopinc.mvpchallenge.ui.kingdom_list.KingdomsActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -47,7 +47,7 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
     }
 
     @Subscribe
-    public void onLoginFail(LoginFailEvent error) {
+    public void onLoginFail(LoginFailureEvent error) {
         email = null;
         view.hideLoadingIndicator();
         view.showOtherError(error.getError());

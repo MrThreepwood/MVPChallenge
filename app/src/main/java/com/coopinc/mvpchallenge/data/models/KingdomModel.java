@@ -1,8 +1,9 @@
 package com.coopinc.mvpchallenge.data.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class KingdomModel {
+public class KingdomModel implements Serializable{
     private String id;
     private String name;
     private String image;
@@ -19,9 +20,11 @@ public class KingdomModel {
     public String getId() {
         return id;
     }
+
     public String getName(){
         return name;
     }
+
     public String getImage(){
         return image;
     }
@@ -32,5 +35,9 @@ public class KingdomModel {
 
     public String getPopulation() {
         return population;
+    }
+
+    public List<QuestModel> getQuests() {
+        return quests;
     }
 }

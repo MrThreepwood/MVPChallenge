@@ -9,8 +9,11 @@ public class BaseActivity extends AppCompatActivity{
 
     protected int container;
 
-    public void nextFragment(Fragment fragment) {
+    public void nextFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
         transaction.replace(container, fragment).commit();
     }
 
