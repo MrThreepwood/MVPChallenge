@@ -2,6 +2,7 @@ package com.coopinc.mvpchallenge.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import butterknife.ButterKnife;
 import icepick.Icepick;
@@ -43,5 +44,6 @@ public abstract class BaseFragment<T extends IBasePresenter> extends Fragment{
         ButterKnife.unbind(this);
     }
 
+    @NonNull
     public abstract T onCreatePresenter();
 }

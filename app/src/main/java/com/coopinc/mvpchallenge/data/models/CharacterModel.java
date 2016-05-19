@@ -1,11 +1,21 @@
 package com.coopinc.mvpchallenge.data.models;
 
-public class CharacterModel {
+import java.io.Serializable;
+
+public class CharacterModel implements Serializable {
     private String id;
     private String name;
     private String image;
     private String profession;
     private String bio;
+
+    public CharacterModel(String bio, String id, String image, String name, String profession) {
+        this.bio = bio;
+        this.id = id;
+        this.image = image;
+        this.name = name;
+        this.profession = profession;
+    }
 
     public String getId() {
         return id;

@@ -1,4 +1,4 @@
-package com.coopinc.mvpchallenge.ui.kingdoms;
+package com.coopinc.mvpchallenge.ui.kingdom_list;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -6,13 +6,14 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.coopinc.mvpchallenge.ChallengeApp;
-import com.coopinc.mvpchallenge.data.events.KingdomListFailureEvent;
-import com.coopinc.mvpchallenge.data.events.KingdomListSuccessEvent;
+import com.coopinc.mvpchallenge.data.events.kingdom_list.KingdomListFailureEvent;
+import com.coopinc.mvpchallenge.data.events.kingdom_list.KingdomListSuccessEvent;
 import com.coopinc.mvpchallenge.data.models.KingdomModel;
 import com.coopinc.mvpchallenge.data.service.kingdom.KingdomService;
 import com.coopinc.mvpchallenge.ui.BasePresenter;
 import com.coopinc.mvpchallenge.ui.auth.AuthActivity;
 import com.coopinc.mvpchallenge.ui.auth.LoginPresenter;
+import com.coopinc.mvpchallenge.ui.kingdom_detail.KingdomPagerFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -23,7 +24,8 @@ import java.util.List;
 import icepick.State;
 
 public class KingdomListPresenter extends BasePresenter implements IKingdomListPresenter {
-    public static final String KINGDOM_FLAG = "kingdomId";
+    public static final String KINGDOM_ID_KEY = "kingdomId";
+    public static final String KINGDOM_NAME_KEY = "kingdomName";
     private static final String DEFAULT_TITLE = "email";
 
     private IKingdomListFragment view;
@@ -55,13 +57,13 @@ public class KingdomListPresenter extends BasePresenter implements IKingdomListP
     }
 
     @Override
-    public void onKingdomSelected(String kingdomId) {
+    public void onKingdomSelected(String kingdomId, String kingdomName) {
         Bundle args = new Bundle();
-        args.putString(KINGDOM_FLAG, kingdomId);
-        Toast.makeText(ChallengeApp.getContext(), "Go to Quest Pager", Toast.LENGTH_LONG).show();
-//        KingdomQuestPager f = new KingdomQuestPager();
-//        f.setArguments(args);
-//        view.goToKingdom(f);
+        args.putString(KINGDOM_ID_KEY, kingdomId);
+        args.putString(KINGDOM_NAME_KEY, kingdomName);
+        KingdomPagerFragment f = new KingdomPagerFragment();
+        f.setArguments(args);
+        view.goToKingdom(f);
     }
 
     @Override

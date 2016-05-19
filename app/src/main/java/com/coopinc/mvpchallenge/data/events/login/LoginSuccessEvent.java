@@ -1,4 +1,4 @@
-package com.coopinc.mvpchallenge.data.events;
+package com.coopinc.mvpchallenge.data.events.login;
 
 import com.coopinc.mvpchallenge.data.models.MessageModel;
 

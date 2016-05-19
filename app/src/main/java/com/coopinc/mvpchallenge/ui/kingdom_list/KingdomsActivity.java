@@ -1,4 +1,4 @@
-package com.coopinc.mvpchallenge.ui.kingdoms;
+package com.coopinc.mvpchallenge.ui.kingdom_list;
 
 import android.os.Bundle;
 import android.view.Menu;

@@ -1,4 +1,4 @@
-package com.coopinc.mvpchallenge.data.events;
+package com.coopinc.mvpchallenge.data.events.kingdom_list;
 
 
 public class KingdomListFailureEvent {

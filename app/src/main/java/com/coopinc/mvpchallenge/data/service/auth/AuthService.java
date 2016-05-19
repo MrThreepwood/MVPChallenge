@@ -1,8 +1,8 @@
 package com.coopinc.mvpchallenge.data.service.auth;
 
 import com.coopinc.mvpchallenge.data.domain.auth.IAuthDomain;
-import com.coopinc.mvpchallenge.data.events.LoginFailEvent;
-import com.coopinc.mvpchallenge.data.events.LoginSuccessEvent;
+import com.coopinc.mvpchallenge.data.events.login.LoginFailureEvent;
+import com.coopinc.mvpchallenge.data.events.login.LoginSuccessEvent;
 import com.coopinc.mvpchallenge.data.models.MessageModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,6 +25,6 @@ public class AuthService implements ILoginCallback {
 
     @Override
     public void logInFailure(String error) {
-        EventBus.getDefault().post(new LoginFailEvent(error));
+        EventBus.getDefault().post(new LoginFailureEvent(error));
     }
 }

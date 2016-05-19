@@ -1,4 +1,4 @@
-package com.coopinc.mvpchallenge.ui.kingdoms;
+package com.coopinc.mvpchallenge.ui.kingdom_list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -72,7 +72,7 @@ public class KingdomListAdapter extends RecyclerView.Adapter<KingdomListAdapter.
                 @Override
                 public void onClick(View view) {
                     String kingdomId = (String) view.getTag();
-                    presenter.onKingdomSelected(kingdomId);
+                    presenter.onKingdomSelected(kingdomId, vKingdomName.getText().toString());
                 }
             });
         }

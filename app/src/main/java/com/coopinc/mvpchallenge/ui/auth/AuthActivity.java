@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 
 import com.coopinc.mvpchallenge.R;
 import com.coopinc.mvpchallenge.ui.BaseActivity;
-import com.coopinc.mvpchallenge.ui.kingdoms.KingdomsActivity;
+import com.coopinc.mvpchallenge.ui.kingdom_list.KingdomsActivity;
 
 public class AuthActivity extends BaseActivity {
     SharedPreferences prefs;

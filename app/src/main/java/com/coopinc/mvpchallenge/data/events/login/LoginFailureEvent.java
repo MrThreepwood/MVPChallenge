@@ -1,15 +1,15 @@
-package com.coopinc.mvpchallenge.data.events;
+package com.coopinc.mvpchallenge.data.events.login;
 
-public class LoginFailEvent {
+public class LoginFailureEvent {
     private String error = "An unexpected error occured";
 
-    public LoginFailEvent(String error) {
+    public LoginFailureEvent(String error) {
         if (error != null && !error.isEmpty()) {
             this.error = error;
         }
     }
 
-    public LoginFailEvent() {
+    public LoginFailureEvent() {
 
     }
 
