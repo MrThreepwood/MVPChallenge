@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import icepick.Icepick;
 import icepick.State;
 
 public class KingdomDetailFragment extends Fragment implements IDetailFragment {
@@ -32,6 +33,12 @@ public class KingdomDetailFragment extends Fragment implements IDetailFragment {
     TextView tvPopulation;
     @Bind(R.id.quest_list)
     RecyclerView rvQuests;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -51,6 +58,12 @@ public class KingdomDetailFragment extends Fragment implements IDetailFragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
@@ -58,7 +71,9 @@ public class KingdomDetailFragment extends Fragment implements IDetailFragment {
 
     @Override
     public void setupModel() {
-        kingdom = (KingdomModel) getArguments().getSerializable(KingdomPagerPresenter.KINGDOM_KEY);
+        if (kingdom == null) {
+            kingdom = (KingdomModel) getArguments().getSerializable(KingdomPagerPresenter.KINGDOM_KEY);
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.coopinc.mvpchallenge.R;
 import com.coopinc.mvpchallenge.ui.BaseFragment;
@@ -18,8 +19,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class KingdomPagerFragment extends BaseFragment<IKingdomPagerPresenter> {
+public class KingdomPagerFragment extends BaseFragment<IKingdomPagerPresenter> implements IKingdomPagerFragment {
 
     private String kingdomId;
     private String kingdomName;
@@ -30,6 +32,8 @@ public class KingdomPagerFragment extends BaseFragment<IKingdomPagerPresenter> {
     ProgressBar progressBar;
     @Bind(R.id.view_pager)
     ViewPager viewPager;
+    @Bind(R.id.tv_empty)
+    TextView tvEmpty;
 
     private KingdomPagerAdapter kingdomPagerAdapter;
 
@@ -57,18 +61,33 @@ public class KingdomPagerFragment extends BaseFragment<IKingdomPagerPresenter> {
         return new KingdomPagerPresenter(this);
     }
 
+    @Override
     public void setTitle(String title) {
         toolbar.setTitle(title);
     }
 
+    @Override
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
     }
 
+    @Override
     public void pagerSetup(List<IDetailFragment> fragments) {
-        kingdomPagerAdapter = new KingdomPagerAdapter(getFragmentManager(), fragments);
+        tvEmpty.setVisibility(View.GONE);
+        kingdomPagerAdapter = new KingdomPagerAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(kingdomPagerAdapter);
         viewPager.addOnPageChangeListener(new KingdomPageChangeListener());
+    }
+
+    @Override
+    public void setError(String error) {
+        tvEmpty.setText(error);
+        tvEmpty.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.toolbar)
+    public void onBackNavPressed() {
+        getActivity().getFragmentManager().popBackStack();
     }
 
     public class KingdomPageChangeListener implements ViewPager.OnPageChangeListener {

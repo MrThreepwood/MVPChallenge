@@ -25,7 +25,7 @@ public class CharacterDomain implements ICharacterDomain {
 
             @Override
             public void failure(RetrofitError error) {
-                service.onCharacterFailure(error.getMessage());
+                service.onCharacterFailure(error.getMessage(), error.getUrl());
             }
         });
     }
