@@ -8,6 +8,7 @@ public class CharacterModel implements Serializable {
     private String image;
     private String profession;
     private String bio;
+    private boolean isInError = false;
 
     public CharacterModel(String bio, String id, String image, String name, String profession) {
         this.bio = bio;
@@ -35,6 +36,15 @@ public class CharacterModel implements Serializable {
 
     public String getBio() {
         return bio;
+    }
+
+    public boolean isInError() {
+        return isInError;
+    }
+
+    public void setBioError(String error) {
+        this.isInError = true;
+        bio = error;
     }
 
 }

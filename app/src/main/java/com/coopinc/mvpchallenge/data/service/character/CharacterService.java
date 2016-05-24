@@ -1,6 +1,7 @@
 package com.coopinc.mvpchallenge.data.service.character;
 
 import com.coopinc.mvpchallenge.data.domain.character.ICharacterDomain;
+import com.coopinc.mvpchallenge.data.events.character.CharacterFailureEvent;
 import com.coopinc.mvpchallenge.data.events.character.CharacterSuccessEvent;
 import com.coopinc.mvpchallenge.data.models.CharacterModel;
 
@@ -23,7 +24,7 @@ public class CharacterService implements ICharacterCallback {
     }
 
     @Override
-    public void onCharacterFailure(String error) {
-
+    public void onCharacterFailure(String error, String url) {
+        EventBus.getDefault().post(new CharacterFailureEvent(error, url));
     }
 }

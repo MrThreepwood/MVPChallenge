@@ -3,12 +3,14 @@ package com.coopinc.mvpchallenge.ui.kingdom_detail;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.coopinc.mvpchallenge.ChallengeApp;
 import com.coopinc.mvpchallenge.R;
 import com.coopinc.mvpchallenge.data.models.CharacterModel;
 import com.coopinc.mvpchallenge.data.models.QuestModel;
@@ -17,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import icepick.Icepick;
 import icepick.State;
 
 public class QuestDetailFragment extends Fragment implements IDetailFragment {
@@ -35,6 +38,12 @@ public class QuestDetailFragment extends Fragment implements IDetailFragment {
     @Bind(R.id.quest_giver_bio)
     TextView tvGiverBio;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,8 +56,14 @@ public class QuestDetailFragment extends Fragment implements IDetailFragment {
         tvQuestDescription.setText(quest.getDescription());
         Picasso.with(getActivity()).load(quest.getGiver().getImage()).transform(new CircleTransform()).into(ivGiverImage);
         tvGiverName.setText(quest.getGiver().getName());
-        tvGiverBio.setText(quest.getGiver().getBio());
+        setBio();
         return v;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 
     @Override
@@ -77,9 +92,27 @@ public class QuestDetailFragment extends Fragment implements IDetailFragment {
     }
 
     public void setQuestGiver(CharacterModel giver) {
-        if (tvGiverBio != null) {
-            tvGiverBio.setText(giver.getBio());
-        }
         quest.setGiver(giver);
+        setBio();
+    }
+
+    private void setBio() {
+        String bio = quest.getGiver().getBio();
+        if (quest.getGiver().isInError()) {
+            tvGiverBio.setTextColor(ContextCompat.getColor(ChallengeApp.getContext(), R.color.red));
+            if (bio != null) {
+                String errorString = "There was difficulty loading this biography: " + bio;
+                tvGiverBio.setText(errorString);
+                return;
+            } else {
+                tvGiverBio.setText("There was an unexpected error loading this bio.");
+                return;
+            }
+        }
+        if (bio == null) {
+            tvGiverBio.setText("Loading...");
+            return;
+        }
+        tvGiverBio.setText(bio);
     }
 }

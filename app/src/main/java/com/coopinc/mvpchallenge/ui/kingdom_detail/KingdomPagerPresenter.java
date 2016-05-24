@@ -28,18 +28,19 @@ public class KingdomPagerPresenter extends BasePresenter implements IKingdomPage
     public static final String KINGDOM_KEY = "kingdom";
     public static final String QUEST_KEY = "quest";
 
+    @State
+    KingdomModel kingdom;
+
+    private Map<String, List<QuestModel>> questsByGiverID = new HashMap<>();
+
     private KingdomService kingdomService;
     private CharacterService characterService;
 
-    private KingdomPagerFragment view;
+    private IKingdomPagerFragment view;
 
     private IDetailFragment currentFragment;
 
-    @State
-    KingdomModel kingdom;
-    private Map<String, List<QuestModel>> questsByGiverID = new HashMap<>();
-
-    public KingdomPagerPresenter(KingdomPagerFragment view) {
+    public KingdomPagerPresenter(IKingdomPagerFragment view) {
         this.view = view;
         kingdomService = ChallengeApp.getKingdomService();
         characterService = ChallengeApp.getCharacterService();
@@ -97,6 +98,8 @@ public class KingdomPagerPresenter extends BasePresenter implements IKingdomPage
     @Subscribe
     public final void onKingdomDetailFailure(KingdomDetailFailureEvent kingdomDetailFailure) {
         String error = kingdomDetailFailure.getError();
+        view.hideProgressBar();
+        view.setError(error);
     }
 
     @Subscribe
@@ -118,7 +121,15 @@ public class KingdomPagerPresenter extends BasePresenter implements IKingdomPage
 
     @Subscribe
     public final void onCharacterFailure(CharacterFailureEvent characterFailureEvent) {
-        //TODO: Figure out how to get URL param from retrofit error.
+        String url = characterFailureEvent.getAttemptedUrl();
+        String[] strings = url.split("/");
+        String characterId = strings[strings.length-1];
+        if (questsByGiverID.containsKey(characterId)) {
+            for (QuestModel quest: questsByGiverID.get(characterId)) {
+                CharacterModel questGiver = quest.getGiver();
+                questGiver.setBioError(characterFailureEvent.getError());
+            }
+        }
     }
 
     private KingdomDetailFragment buildKingdomDetailFragment(KingdomModel kingdomModel) {
